@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true, limit: "16kb"}))
 
 
 //URL Routes
-app.use("/api/shorten", urlRouter)
+app.use("/api", urlRouter)
 
 
 app.use(errorHandler)
