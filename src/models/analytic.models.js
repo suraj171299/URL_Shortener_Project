@@ -14,6 +14,12 @@ const analyticSchema = new Schema({
     location:{
         type: Object
     },
+    os: {
+        type: String
+    },
+    deviceType: {
+        type: String
+    },
     timestamp:{
         type: Date,
         default: Date.now

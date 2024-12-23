@@ -3,9 +3,9 @@ import { ApiError } from "../utils/ApiError.js";
 import { apiResponse } from "../utils/apiResponse.js"
 import { URL } from "../models/url.models.js"
 import { generateUniqueAlias, generateUniqueUrl } from "../utils/generateUniqueAlias.js";
-import { Analytics } from "../models/analytic.models.js";
-import getLocationfromIP from "../utils/getLocationfromIP.js";
-
+import { createAnalyticLog } from "../services/analytic.services.js";
+import { fetchFromCache, storeInCache } from "../services/cache.services.js"
+import { getUrlByAlias, incrementAnalytics } from "../services/url.services.js"
 
 const urlShortener = asyncHandler(async (req, res) => {
     const { longUrl, customAlias, topic } = req.body
@@ -58,27 +58,25 @@ const redirectUrl = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Alias is required")
     }
 
-    const urlRecord = await URL.findOne({ customAlias: alias })
-
+    let urlRecord = await fetchFromCache(alias)
+    
     if(!urlRecord){
-        throw new ApiError(400, "Url with this alias not found")
+        
+        console.log("Cache miss. Fetching from database...");
+        
+        urlRecord = await getUrlByAlias(alias);
+        
+        if (!urlRecord) {
+            throw new ApiError(400, "URL with this alias not found");
+        }
+       
+        await storeInCache(alias, urlRecord, 3600);
     }
 
-    const ipAddress = '3.1.3.2'
-    console.log(ipAddress);
-    const userAgent = req.headers['user-agent'] || "Unknown"
-    const location = await getLocationfromIP(ipAddress)
-    console.log(location);
-
-    const analytics = await Analytics.create({
-        userAgent,
-        ipAddress,
-        location: location,
-        url: urlRecord?._id
-    })
-
-    urlRecord.analytics.push(analytics._id)
-    await urlRecord.save()
+    const { analyticsId } = await createAnalyticLog(req, urlRecord);
+    
+    await incrementAnalytics(urlRecord._id, analyticsId);
+    
 
     return res.redirect(urlRecord.longUrl)
 })

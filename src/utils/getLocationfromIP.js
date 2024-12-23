@@ -1,7 +1,7 @@
 import axios from "axios"
 import { ApiError } from "./ApiError.js"
 
-const getLocationfromIP = async(ipAddress) => {
+export const getLocationfromIP = async(ipAddress) => {
     try {
         const API_KEY = process.env.API_KEY
         const response = await axios.get(`https://ipinfo.io/${ipAddress}?token=${API_KEY}`)
@@ -12,4 +12,3 @@ const getLocationfromIP = async(ipAddress) => {
     }
 }
 
-export default getLocationfromIP

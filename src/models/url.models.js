@@ -21,6 +21,33 @@ const urlSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    totalClicks: {
+        type: Number,
+        default: 0
+    },
+    uniqueCLicks: {
+        type: Number,
+        default: 0
+    },
+    uniqueIPs: {
+        type: [String],
+        default: []
+    },
+    clicksByDate: {
+        type: Map,
+        of: Number,
+        default: {}
+    },
+    os: {
+        type: Map,
+        of: Object,
+        default: {}
+    },
+    deviceType: {
+        type: Map,
+        of: Object,
+        default: {}
+    },
     analytics: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Analytics'
