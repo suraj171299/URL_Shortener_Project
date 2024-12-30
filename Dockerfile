@@ -1,5 +1,5 @@
 # Use a lightweight Node.js image with the specific version
-FROM node:22.11.0-slim
+FROM node:lts-slim
 
 # Set environment variables
 ENV NODE_ENV=production
