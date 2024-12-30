@@ -27,5 +27,8 @@ app.use("/api", analyticRouter)
 app.use('/api/auth', authRoutes)
 app.use(errorHandler)
 
+app.get('/', (req, res) => {
+    res.send('Welcome to the URL Shortener API!');
+});
 
 export { app }
