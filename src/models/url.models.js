@@ -1,6 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 
 const urlSchema = new Schema({
+    userId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "User", 
+    },
     longUrl: {
         type: String,
         required: true, 
@@ -15,7 +19,8 @@ const urlSchema = new Schema({
         unique: true
     },
     topic: {
-        type: String
+        type: String,
+        default: "Unknown"
     },
     createdAt: {
         type: Date,
@@ -25,7 +30,7 @@ const urlSchema = new Schema({
         type: Number,
         default: 0
     },
-    uniqueCLicks: {
+    uniqueClicks: {
         type: Number,
         default: 0
     },
@@ -34,18 +39,27 @@ const urlSchema = new Schema({
         default: []
     },
     clicksByDate: {
-        type: Map,
-        of: Number,
-        default: {}
+        _id: false, 
+        type: [
+            {
+                date:{ 
+                    type: String,
+                    required: true
+                },
+                clicks:{
+                    type: Number,
+                    default: 0
+                }
+            }
+        ],
+        default: []
     },
-    os: {
-        type: Map,
-        of: Object,
+    osType: {
+        type: Object,
         default: {}
     },
     deviceType: {
-        type: Map,
-        of: Object,
+        type: Object,
         default: {}
     },
     analytics: [{
