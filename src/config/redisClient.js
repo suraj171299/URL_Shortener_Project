@@ -2,7 +2,7 @@ import { createClient } from 'redis'
 
 
 export const redisClient = createClient({
-    url: process.env.REDISCLOUD_URL,
+    url: process.env.REDISCLOUD_URL || 'redis://127.0.0.1:6379',
     socket: {
         connectTimeout: 1000,
         reconnectStrategy: (retries) => {
@@ -23,6 +23,7 @@ redisClient.on('error', (err) => {
 const connectRedis = async () => {
     try {
         await redisClient.connect()
+        
         console.log('Connected to Redis')
     } catch (err) {
         console.error('Error connecting to Redis:', err)

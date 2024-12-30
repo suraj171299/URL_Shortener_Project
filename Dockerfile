@@ -1,21 +1,23 @@
-# Use a specific Node.js version (v22.11.0)
-FROM node:22.11.0
+# Use a lightweight Node.js image with the specific version
+FROM node:22.11.0-slim
+
+# Set environment variables
+ENV NODE_ENV=production
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the container
+# Copy package.json and package-lock.json for dependency installation
 COPY package*.json ./
 
-# Install dependencies (including production dependencies)
-RUN npm install --production
+# Install dependencies with caching
+RUN npm ci --only=production
 
-# Copy the rest of your app's code into the container
+# Copy the rest of your application code
 COPY . .
 
-# Set environment variables for Redis connection if required
-# Use your local Redis instance or set to the default Heroku Redis URL if deploying to Heroku
-ENV NODE_ENV=production
+# Expose the port the app will run on (Heroku dynamically sets the port)
+EXPOSE 8080
 
-# Command to run your Node.js app
+# Define the default command to run your application
 CMD ["node", "src/index.js"]
