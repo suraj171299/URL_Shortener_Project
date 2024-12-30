@@ -13,9 +13,6 @@ RUN npm install --production
 # Copy the rest of your app's code into the container
 COPY . .
 
-# Expose port 8080 (since your local app uses this port)
-EXPOSE $PORT
-
 # Set environment variables for Redis connection if required
 # Use your local Redis instance or set to the default Heroku Redis URL if deploying to Heroku
 ENV NODE_ENV=production
