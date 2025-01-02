@@ -7,8 +7,6 @@ import analyticRouter from "./routes/analytic.routes.js"
 import authRoutes from "./routes/auth.routes.js"
 import { errorHandler } from './middlewares/error.middlewares.js'
 import passport from "./config/passport.config.js"
-import swaggerUi from "swagger-ui-express"
-import swaggerDocument from "./swagger-output.json" with { type: 'json'}
 
 
 const app = express()
@@ -42,7 +40,5 @@ app.use(errorHandler)
 app.get('/', (req, res) => {
     res.send('Welcome to the URL Shortener API!');
 });
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 export { app }
