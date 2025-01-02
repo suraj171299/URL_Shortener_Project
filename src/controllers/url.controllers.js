@@ -10,12 +10,13 @@ import { getUrlByAlias, incrementAnalytics, updateUrlClicks } from "../services/
 const urlShortener = asyncHandler(async (req, res) => {
     const { longUrl, customAlias, topic } = req.body
     const id = req.user._id
-
+    
     if (!longUrl) {
         throw new ApiError(400, "LongUrl is required")
     }
 
-    const cachedShortUrl = await fetchFromCache(`longUrl:${id}`)
+    const cachedShortUrl = await fetchFromCache(`${longUrl}:${id}`)
+
     if(cachedShortUrl){
         return res.status(200).json(new apiResponse(200, {
             shortUrl: cachedShortUrl.shortUrl,
@@ -51,7 +52,7 @@ const urlShortener = asyncHandler(async (req, res) => {
             userId: id,
         })
 
-        await storeInCache(`longUrl:${id}`,{
+        await storeInCache(`${longUrl}:${id}`,{
             longUrl: newUrl.longUrl,
             shortUrl: newUrl.shortUrl,
             customAlias: newUrl.customAlias,

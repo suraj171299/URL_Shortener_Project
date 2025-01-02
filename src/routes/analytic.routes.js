@@ -2,11 +2,14 @@ import { Router } from "express";
 import { getAliasAnalytics, getOverallAnalytics, getTopicAnalytics } from "../controllers/analytic.controllers.js";
 import { verifyJWT } from "../middlewares/auth.middlewares.js";
 import { rateLimiterMiddleware } from "../middlewares/rateLimiter.middleware.js"
+import { validate } from "../middlewares/inputValidation.middlewares.js";
+import { aliasValidationSchema, topicValidationSchema } from "../utils/inputValidation.js";
 
 const router = Router();
 
 router.route("/analytics/alias/:alias").get(
     verifyJWT,
+    validate(aliasValidationSchema),
     rateLimiterMiddleware(
         10,
         60,
@@ -17,6 +20,7 @@ router.route("/analytics/alias/:alias").get(
 
 router.route("/analytics/topic/:topic").get(
     verifyJWT,
+    validate(topicValidationSchema),
     rateLimiterMiddleware(
         10,
         60,
