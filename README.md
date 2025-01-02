@@ -51,7 +51,7 @@ This project is a URL shortener application with advanced analytics features. It
    GOOGLE_CLIENT_ID=your_google_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
    JWT_SECRET=your_jwt_secret
-   CORS_ORIGIN=http://localhost:5000,http://your-hosted-url.com
+   CORS_ORIGIN=http://localhost:8080,http://your-hosted-url.com
    API_KEY=api key for ipinfo
    BASE_URL="base url of your app"
    ACCESS_TOKEN_SECRET=your_access_token
